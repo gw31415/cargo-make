@@ -10,20 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v6
     - name: Install rust
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
-        profile: minimal
-        override: true
+      run: |
+        rustup toolchain install stable --profile minimal
+        rustup override set stable
     - name: Install cargo-make
-      uses: actions-rs/cargo@v1
-      with:
-        command: install
-        args: --debug cargo-make
+      run: cargo install --debug cargo-make
     - name: Run CI
-      uses: actions-rs/cargo@v1
-      with:
-        command: run
-        args: --bin cargo-make --target-dir target/ci -- make ci-flow
+      run: cargo run --bin cargo-make --target-dir target/ci -- make ci-flow
